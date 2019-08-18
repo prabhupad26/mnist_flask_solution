@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Handwritten digits recognition</title>
-	<script type="text/javascript">
-	var canvas, ctx, flag = false,
+    <title>Handwritten digits recognition</title>
+    <script src="static/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript">
+    var canvas, ctx, flag = false,
         prevX = 0,
         currX = 0,
         prevY = 0,
@@ -43,16 +44,17 @@
     }
     
     function erase() {
-        var m = confirm("Want to clear");
-        if (m) {
-            ctx.clearRect(0, 0, w, h);
-            document.getElementById("canvasimg").style.display = "none";
-        }
+        ctx.clearRect(0, 0, w, h);
+        // document.getElementById("canvasimg").style.display = "none";
     }
     
     function save() {
-        var dataURL = canvas.toDataURL();
-        console.log(dataURL);
+        var dataURL = canvas.toDataURL("image/png");
+        var ajax = new XMLHttpRequest();
+        ajax.open("POST",'/predict_image',false);
+        ajax.setRequestHeader('Content-Type', 'application/upload');
+        ajax.send(dataURL);
+        console.log(ajax.response);
     }
     
     function findxy(res, e) {
@@ -85,12 +87,13 @@
             }
         }
     }
+
 </script>
 </head>
 <body onload="init()">
 <div>
-	<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"></canvas>
-	<input type="button" value="RESET" id="clr" onclick="erase()"><input type="button" value="PREDICT" id="btn" onclick="save()">
+    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"></canvas>
+    <input type="button" value="RESET" id="clr" onclick="erase()"><input type="button" value="PREDICT" id="btn" onclick="save()">
 </div>
 </body>
 </html>
