@@ -61,6 +61,7 @@
         ajax.setRequestHeader('Content-Type', 'application/upload');
         ajax.send(dataURL);
         console.log(ajax.response);
+        document.getElementById("disp_result").innerHTML = ajax.response;
     }
     
     function findxy(res, e) {
@@ -97,9 +98,11 @@
 </script>
 </head>
 <body onload="init()">
-<div>
+<div class="Digit_recog">
     <canvas id="myCanvas" width="28" height="28" style="border:1px solid #000000;"></canvas>
-    <input type="button" value="RESET" id="clr" onclick="erase()"><input type="button" value="PREDICT" id="btn" onclick="save()">
+    <small>Detected: </small><span id="disp_result"></span>
 </div>
+<input type="button" value="RESET" id="clr" style="font-size : 1px;top:17%;left:45%;width:1px;height:1px;" onclick="erase()">
+<input type="button" value="PREDICT" id="btn" style="font-size : 1px;top:17%;left:45%;width:1px;height:1px;" onclick="save()">
 </body>
 </html>

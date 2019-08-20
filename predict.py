@@ -4,6 +4,28 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim
 
+class LeNet(nn.Module):
+    def __init__(self):
+        super(LeNet, self).__init__()
+        self.feature_extractor = nn.Sequential(
+            nn.Conv2d(1, 6, kernel_size=5),
+            nn.MaxPool2d(kernel_size=2),
+            nn.ReLU(),
+            nn.Conv2d(6, 16, kernel_size=5),
+            nn.MaxPool2d(kernel_size=2),
+            nn.ReLU()
+        )
+        self.classifier = nn.Sequential(
+            nn.Linear(16 * 4 * 4 , 120),
+            nn.Linear(120, 84),
+            nn.ReLU(),
+            nn.Linear(84, 10)
+        )
+    def forward(self, input):
+        out = self.feature_extractor(input)
+        out = out.view(-1, 16 * 4 * 4 )
+        out = self.classifier(out)
+        return out
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -17,23 +39,23 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         return x
 class DigitRecognition():
-    def __init__(self,image):
-        self.model = Net()
+    def __init__(self,image,model_arch):
+        self.model_arch = model_arch
+        if model_arch == 'CNN':
+            self.model = LeNet()
+        else:
+            self.model = Net()
         self.image = image
     def readImage(self):
         read_img = Image.open(self.image)
         return read_img.convert('L')
     def preprocessImage(self):
         self.preprocess = transforms.Compose([
-            transforms.Resize(28),
-            transforms.CenterCrop(28),
             transforms.ToTensor()])
     def predict(self):
         # Initialize model params
         model = self.model
-        criterion = nn.CrossEntropyLoss()
-        optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
-
+        
         #Read image
         img = self.readImage();
 
@@ -42,12 +64,16 @@ class DigitRecognition():
         img_tensor = self.preprocess(img);
 
         #Load pretrained model params
-        checkpoint = torch.load('mnist_model_A')
-        model.load_state_dict(checkpoint['model_state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-
-        #Forward pass and return prediction
-        output = model(img_tensor);
+        if self.model_arch == 'CNN':
+            checkpoint = torch.load('mnist_model_B')
+            model.load_state_dict(checkpoint['lenet_state_dict'])
+            model.eval()
+            output = model(img_tensor.reshape(1,1, 28, 28))
+        else:
+            checkpoint = torch.load('mnist_model_A')
+            model.load_state_dict(checkpoint['model_state_dict'])
+            model.eval()
+            output = model(img_tensor);
         _, preds = torch.max(output, 1);
         print(output)
         return str(preds.numpy()[0])

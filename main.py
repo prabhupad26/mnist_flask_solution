@@ -20,7 +20,7 @@ def predict_image():
     target_img = 'static/uploads/sample{0}.png'.format(strftime('%Y%m%d%H%M%S'))
     with open(target_img,'wb') as file:
         file.write(input_img_decoded)
-    model_obj = DigitRecognition(target_img)
+    model_obj = DigitRecognition(target_img,model_arch= 'CNN')
     predicted_output = model_obj.predict()
     return predicted_output
 if __name__ == '__main__':
