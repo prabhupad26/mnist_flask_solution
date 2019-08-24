@@ -74,8 +74,9 @@ class DigitRecognition():
             model.load_state_dict(checkpoint['model_state_dict'])
             model.eval()
             output = model(img_tensor);
+        output[0] = torch.nn.functional.softmax(output[0], dim=0)
         _, preds = torch.max(output, 1);
-        print(output)
+        print(torch.nn.functional.softmax(output[0], dim=0))
         return str(preds.numpy()[0])
 if __name__ == '__main__':
 	main()
