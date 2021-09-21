@@ -2,6 +2,15 @@
 <html>
 <head>
     <title>Handwritten digits recognition</title>
+      <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>  <!-- Font Awesome CDN link -->
+
     <script src="static/vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript">
     var canvas, ctx, flag = false,
@@ -51,7 +60,7 @@
         w = canvas.width;
         h = canvas.height;
         ctx.fillRect(0, 0, w, h);
-        // document.getElementById("canvasimg").style.display = "none";
+        document.getElementById("disp_result").innerHTML = "";
     }
     
     function save() {
@@ -98,11 +107,13 @@
 </script>
 </head>
 <body onload="init()">
-<div class="Digit_recog">
-    <canvas id="myCanvas" width="28" height="28" style="border:1px solid #000000;"></canvas>
-    <small>Detected: </small><span id="disp_result"></span>
+<div class="container">
+    <div class="Digit_recog">
+        <canvas id="myCanvas" width="300%" height="300%" style="border:1px solid #000000;"></canvas>
+        <small>Detected: </small><span id="disp_result"></span>
+    </div>
+    <input type="button" value="RESET" id="clr" onclick="erase()" class="btn btn-primary">
+    <input type="button" value="PREDICT" id="btn" onclick="save()" class="btn btn-primary">
 </div>
-<input type="button" value="RESET" id="clr" style="font-size : 1px;top:17%;left:45%;width:1px;height:1px;" onclick="erase()">
-<input type="button" value="PREDICT" id="btn" style="font-size : 1px;top:17%;left:45%;width:1px;height:1px;" onclick="save()">
 </body>
 </html>

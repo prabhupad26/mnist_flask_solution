@@ -1,6 +1,13 @@
-# mnist_flask_solution
-Predict handwritten digits
+# Handwritten digit Captcha 
+* Objective : A simple solution for replacing traditional captcha with a handwritten digit recognition using deep learning model. 
 
-Simple application to recognize the handwritten digits using the a CNN (Convolutional neural network) and Fully connected network
+* Solution : MNIST dataset is used to train a simple CNN based model, the model is then saved and further exposed as a REST api using Flask. With javascript code input image is obtained and processed.   
 
-Run : python main.py to launch the application
+* Run : `python main.py` to launch the application
+
+> Sample output :
+> ![Sample Output](captcha_sample.gif)
+> 
+> 
+> 
+> 
